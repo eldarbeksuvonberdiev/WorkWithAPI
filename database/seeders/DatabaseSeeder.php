@@ -24,28 +24,28 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        for ($i = 1; $i <= 20; $i++) {
-            Category::create(['name' => 'Category' . $i]);
-        }
+        // for ($i = 1; $i <= 20; $i++) {
+        //     Category::create(['name' => 'Category' . $i]);
+        // }
 
-        for ($i = 1; $i <= 20; $i++) {
-            Characteristic::create([
-                'name' => 'characteristic ' . $i
-            ]);
-        }
+        // for ($i = 1; $i <= 20; $i++) {
+        //     Characteristic::create([
+        //         'name' => 'characteristic ' . $i
+        //     ]);
+        // }
 
-        for ($i = 1; $i <= 20; $i++) {
-            Attribute::create([
-                'category_id' => rand(1, 20),
-                'name' => 'attribute ' . $i
-            ]);
-        }
+        // for ($i = 1; $i <= 20; $i++) {
+        //     Attribute::create([
+        //         'category_id' => rand(1, 20),
+        //         'name' => 'attribute ' . $i
+        //     ]);
+        // }
 
-        for ($i=1; $i < 100; $i++) { 
-            AttributeCharacteristic::create([
-                'attribute_id' => rand(1,20),
-                'characteristic_id' => rand(1,20),
-            ]);
-        }
+        // for ($i=1; $i < 100; $i++) { 
+        //     AttributeCharacteristic::create([
+        //         'attribute_id' => rand(1,20),
+        //         'characteristic_id' => rand(1,20),
+        //     ]);
+        // }
     }
 }
