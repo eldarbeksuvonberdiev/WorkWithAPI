@@ -13,7 +13,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate(15);
+        $data  = [
+            'models' => $products,
+            'message' => 'Success'
+        ];
+        return response()->json($data,200);
     }
 
     /**

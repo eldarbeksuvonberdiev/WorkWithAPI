@@ -6,6 +6,7 @@ use App\Models\Attribute;
 use App\Models\AttributeCharacteristic;
 use App\Models\Category;
 use App\Models\Characteristic;
+use App\Models\Product;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,9 +25,17 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // for ($i = 1; $i <= 20; $i++) {
-        //     Category::create(['name' => 'Category' . $i]);
-        // }
+        for ($i = 1; $i <= 20; $i++) {
+            Category::create(['name' => 'Category' . $i]);
+        }
+
+        for ($i = 1; $i < 20; $i++) {
+            Product::create([
+                'category_id' =>rand(1,20),
+                'name' => 'Product' . $i,
+                'description' => 'Description'. $i
+            ]);
+        }
 
         // for ($i = 1; $i <= 20; $i++) {
         //     Characteristic::create([
