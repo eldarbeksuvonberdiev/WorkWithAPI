@@ -16,7 +16,7 @@ Route::get('/category/{category}',[CategoryController::class,'show']);
 Route::put('/category/{category}',[CategoryController::class,'update']);
 Route::delete('/category/{category}',[CategoryController::class,'destroy']);
 
-Route::get('/product',[ProductController::class,'index'])->middleware('auth:sanctum');
+Route::get('/product',[ProductController::class,'index']);
 Route::post('/product',[ProductController::class,'store']);
 Route::get('/product/{product}',[ProductController::class,'show']);
 Route::put('/product/{product}',[ProductController::class,'update']);

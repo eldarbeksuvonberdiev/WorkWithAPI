@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,11 +15,12 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(15);
-        $data  = [
-            'models' => $products,
-            'message' => 'Success'
-        ];
-        return response()->json($data,200);
+        return ProductResource::collection($products);
+        // $data  = [
+        //     'models' => $products,
+        //     'message' => 'Success'
+        // ];
+        // return response()->json($data,200);
     }
 
     /**
