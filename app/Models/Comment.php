@@ -10,4 +10,9 @@ class Comment extends Model
         'task_id',
         'text',
     ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'task_id');
+    }
 }
