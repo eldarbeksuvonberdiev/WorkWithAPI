@@ -16,11 +16,11 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'category_id' => $this->category,
             'name' =>$this->name,
             'description' => $this->description,
             'created_at' => $this->created_at->format('Y-m-d H-i-s'),
             'updated_at' => $this->updated_at->format('Y-m-d H-i-s'),
+            'category' => $this->category,
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -12,15 +13,16 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::all();
 
+        return CategoryResource::collection($categories);
         // return $categories;
-        $data = [
-            'models' => $categories,
-            'message' => 'success'
-        ];
+        // $data = [
+        //     'models' => $categories,
+        //     'message' => 'success'
+        // ];
 
-        return response()->json($data);
+        // return response()->json($data);
     }
 
     public function store(Request $request)
