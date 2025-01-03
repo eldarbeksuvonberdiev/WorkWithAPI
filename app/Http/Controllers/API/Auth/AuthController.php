@@ -36,20 +36,23 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:5|max:20',
             'c_password' => 'required|same:password'
         ]);
 
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['password'] = $request->password;
+
         $data['password'] = Hash::make($data['password']);
 
         if ($request->role) {
             $data['role'] = $request->role;
         }
-
-        $user = User::create([$data]);
+        $user = User::create($data);
 
         $token = $user->createToken('Token')->plainTextToken;
 

@@ -16,14 +16,16 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (Auth::check()) {
-            if (Auth::user()->role && in_array(Auth::user()->role,$roles )) {
-                return $next($request);
-            }else {
-                return response()->json(['message' => 'You have no permission to make this request!']);
-            }
-        }else {
-            return response()->json(['message' => 'Not Authorised']);
+        dd(Auth::user());
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Not Authorized'], 401);
         }
+    
+        $user = Auth::user();
+        if (!$user || !in_array($user->role, $roles)) {
+            return response()->json(['message' => 'You have no permission to make this request!'], 403);
+        }
+    
+        return $next($request);
     }
 }
