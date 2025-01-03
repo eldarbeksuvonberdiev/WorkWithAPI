@@ -36,18 +36,20 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:5|max:20',
             'c_password' => 'required|same:password'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $data['password'] = Hash::make($data['password']);
+
+        if ($request->role) {
+            $data['role'] = $request->role;
+        }
+
+        $user = User::create([$data]);
 
         $token = $user->createToken('Token')->plainTextToken;
 
@@ -55,6 +57,18 @@ class AuthController extends Controller
             'message' => 'success',
             'data' => $user,
             'token' => $token
+        ];
+
+        return response()->json($response,200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
+        $response = [
+            'status' => true,
+            'message' => 'success',
         ];
 
         return response()->json($response,200);
