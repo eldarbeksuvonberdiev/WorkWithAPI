@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendMail;
+use App\Models\CheckMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    
+
     public function login(Request $request)
     {
         $request->validate([
@@ -18,20 +20,20 @@ class AuthController extends Controller
             'password' => 'required|min:5|max:20'
         ]);
 
-        Auth::attempt($request->only('email','password'));
+        Auth::attempt($request->only('email', 'password'));
 
         if (Auth::check()) {
             $token = Auth::user()->createToken('Token')->plainTextToken;
             $response = [
                 'message' => 'success',
                 'data' => Auth::user(),
-                'token' =>$token
+                'token' => $token
             ];
 
-            return response()->json($response,200);
+            return response()->json($response, 200);
         }
 
-        return response()->json(['error' => 'Unauthorized'],401);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     public function register(Request $request)
@@ -56,13 +58,23 @@ class AuthController extends Controller
 
         $token = $user->createToken('Token')->plainTextToken;
 
+
+        $rand = rand(1000, 9999);
+
+        CheckMail::create([
+            'user_id' => $user->id,
+            'password' => $rand
+        ]);
+
+        SendMail::dispatch($user->email, $rand);
+
         $response = [
             'message' => 'success',
             'data' => $user,
             'token' => $token
         ];
 
-        return response()->json($response,200);
+        return response()->json($response, 200);
     }
 
     public function logout(Request $request)
@@ -74,6 +86,26 @@ class AuthController extends Controller
             'message' => 'success',
         ];
 
-        return response()->json($response,200);
+        return response()->json($response, 200);
+    }
+
+    public function check(Request $request)
+    {
+        $user = auth('sanctum')->user();
+
+        if ($request->data != $user->checks->last()->value) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        User::where('id', $user->id)->update(['email_verified_at' => now()]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Check successfully'
+        ], 200);
     }
 }
