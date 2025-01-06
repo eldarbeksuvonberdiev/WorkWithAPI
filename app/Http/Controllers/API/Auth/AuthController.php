@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendMail;
+use App\Jobs\SendMailJob;
 use App\Models\CheckMail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'password' => $rand
         ]);
 
-        SendMail::dispatch($user->email, $rand);
+        SendMailJob::dispatch($user->email, $rand);
 
         $response = [
             'message' => 'success',
