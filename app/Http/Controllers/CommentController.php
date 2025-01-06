@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CommentResource;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -29,7 +30,14 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'task_id' => 'required|unique:comments,task_id',
+            'text' => 'required|max:300',
+        ]);
+
+        $comment = Comment::create($request->all());
+
+        return new CommentResource($comment);
     }
 
     /**

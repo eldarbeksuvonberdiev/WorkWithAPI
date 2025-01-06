@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\Check;
+use App\Http\Middleware\Role;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,7 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['customAuth' => AuthMiddleware::class]);
+        $middleware->alias([
+            'customAuth' => AuthMiddleware::class,
+            'role' => Role::class,
+            'check' => Check::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
