@@ -16,12 +16,12 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        dd(Auth::user());
-        if (!Auth::check()) {
+        // dd(Auth::user());
+        if (!auth('sanctum')->check()) {
             return response()->json(['message' => 'Not Authorized'], 401);
         }
     
-        $user = Auth::user();
+        $user = auth('sanctum')->user();
         if (!$user || !in_array($user->role, $roles)) {
             return response()->json(['message' => 'You have no permission to make this request!'], 403);
         }
